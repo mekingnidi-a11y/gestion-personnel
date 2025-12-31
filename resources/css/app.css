@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+    /* Force les tableaux à défiler horizontalement sur mobile */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Empêche les textes longs (UUID) de casser le design */
+    .truncate-mobile {
+        @apply truncate max-w-[150px] lg:max-w-none;
+    }
+    
+    /* Grilles adaptables : 1 colonne sur mobile, 2 ou 3 sur PC */
+    .grid-responsive {
+        @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+    }
+}
