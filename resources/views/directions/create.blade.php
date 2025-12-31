@@ -1,69 +1,84 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Créer une nouvelle Direction') }}
-        </h2>
-    </x-slot>
+    <x-slot name="header_title">Nouvelle Direction</x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form action="{{ route('directions.store') }}" method="POST">
-                    @csrf
-                    
-                    <div class="mb-4">
-                        <label class="block font-medium text-sm text-gray-700">Nom de la Direction</label>
-                        <input type="text" name="nom" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block font-medium text-sm text-gray-700">Type de Direction</label>
-                        <select name="type" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" required>
-                            <option value="generale">Direction Générale</option>
-                            <option value="centrale">Direction Centrale</option>
-                            <option value="departementale">Direction Départementale</option>
-                            <option value="rattache_cabinet">Rattachée au Cabinet</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block font-medium text-sm text-gray-700">Direction Parente (Si applicable)</label>
-                        <select name="code_direction_parent" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full">
-                            <option value="">-- Aucune --</option>
-                            @foreach($parents as $parent)
-                                <option value="{{ $parent->code }}">{{ $parent->nom }} ({{ $parent->type }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-<!-- Insérer dans le formulaire existant après le type -->
-<div class="grid grid-cols-2 gap-4">
-    <div class="mb-4">
-        <label class="block font-bold">Email de contact</label>
-        <input type="email" name="contact_email" class="w-full border-gray-300 rounded shadow-sm">
-    </div>
-    <div class="mb-4">
-        <label class="block font-bold">Téléphone</label>
-        <input type="text" name="contact_telephone" class="w-full border-gray-300 rounded shadow-sm">
-    </div>
-</div>
-
-<div class="mb-4">
-    <label class="block font-bold">Référence Arrêté de création</label>
-    <input type="text" name="arret_creation" class="w-full border-gray-300 rounded shadow-sm" placeholder="Ex: Arrêté n°2024-X du...">
-</div>
-
-<div class="mb-4">
-    <label class="block font-bold">Missions</label>
-    <textarea name="missions" rows="4" class="w-full border-gray-300 rounded shadow-sm"></textarea>
-</div>
-
-                    <div class="flex items-center justify-end mt-4">
-                        <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700">
-                            Enregistrer
-                        </button>
-                    </div>
-                </form>
-            </div>
+    <div class="max-w-4xl mx-auto py-8 px-4 transition-colors duration-300">
+        <div class="mb-6 flex items-center gap-4">
+            <a href="{{ route('directions.index') }}" class="p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent dark:border-gray-700 transition">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </a>
+            <h1 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tight">Créer une direction</h1>
         </div>
+
+        <form action="{{ route('directions.store') }}" method="POST" class="bg-white dark:bg-gray-800 p-10 rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+            @csrf
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Nom de la Direction -->
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Nom de la Direction</label>
+                    <input type="text" name="nom" required placeholder="Ex: Direction des Ressources Humaines"
+                        class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-bold text-sm text-slate-800 dark:text-gray-200 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-indigo-600 py-3 shadow-sm transition-colors">
+                </div>
+
+                <!-- Type de Direction -->
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Type de Structure</label>
+                    <select name="type" required class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-bold text-sm text-slate-800 dark:text-gray-200 py-3 transition-colors focus:ring-blue-500">
+                        <option value="generale" class="dark:bg-gray-800">Direction Générale</option>
+                        <option value="centrale" class="dark:bg-gray-800">Direction Centrale</option>
+                        <option value="departementale" class="dark:bg-gray-800">Direction Départementale</option>
+                        <option value="rattache_cabinet" class="dark:bg-gray-800">Rattachée au Cabinet</option>
+                    </select>
+                </div>
+
+                <!-- Direction Parente -->
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Rattachement Hiérarchique</label>
+                    <select name="code_direction_parent" class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-bold text-sm text-slate-800 dark:text-gray-200 py-3 transition-colors focus:ring-blue-500">
+                        <option value="" class="dark:bg-gray-800">-- Aucune (Racine) --</option>
+                        @foreach($parents as $parent)
+                            <option value="{{ $parent->code }}" class="dark:bg-gray-800">{{ $parent->nom }} ({{ $parent->type }})</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Référence Arrêté -->
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Référence Arrêté de création</label>
+                    <input type="text" name="arret_creation" placeholder="Ex: Arrêté n°2025-X du..."
+                        class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-bold text-sm text-slate-800 dark:text-gray-200 focus:ring-blue-500 focus:border-blue-500 py-3 shadow-sm transition-colors">
+                </div>
+            </div>
+
+            <!-- Contact Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Email de contact</label>
+                    <input type="email" name="contact_email" placeholder="direction@ministere.cg"
+                        class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-bold text-sm text-slate-800 dark:text-gray-200 focus:ring-blue-500 focus:border-blue-500 py-3 shadow-sm transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Téléphone</label>
+                    <input type="text" name="contact_telephone" placeholder="+242 06 000 00 00"
+                        class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-bold text-sm text-slate-800 dark:text-gray-200 focus:ring-blue-500 focus:border-blue-500 py-3 shadow-sm transition-colors">
+                </div>
+            </div>
+
+            <!-- Missions -->
+            <div class="mb-10 space-y-2">
+                <label class="block text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">Missions & Attributions</label>
+                <textarea name="missions" rows="4" placeholder="Décrivez les compétences de cette direction..."
+                    class="w-full rounded-2xl border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 font-medium text-sm text-slate-800 dark:text-gray-200 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-indigo-600 shadow-sm p-4 transition-colors"></textarea>
+            </div>
+
+            <div class="flex items-center justify-end gap-6 pt-6 border-t border-gray-50 dark:border-gray-700">
+                <a href="{{ route('directions.index') }}" class="text-[10px] font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest hover:text-slate-600 dark:hover:text-gray-300 transition">
+                    Annuler
+                </a>
+                <button type="submit" class="bg-blue-600 hover:bg-indigo-900 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-10 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-100 dark:shadow-none transition-all active:scale-95">
+                    Enregistrer la direction
+                </button>
+            </div>
+        </form>
     </div>
 </x-app-layout>

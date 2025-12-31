@@ -7,29 +7,29 @@
 }">
     
     <!-- GAUCHE : TABLEAU GLOBAL (2/3) -->
-    <div class="lg:col-span-2 bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-100">
-        <div class="p-6 bg-gray-50 border-b flex justify-between items-center">
+    <div class="lg:col-span-2 bg-white dark:bg-gray-800 shadow-xl rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-700">
+        <div class="p-6 bg-gray-50 dark:bg-gray-700/50 border-b dark:border-gray-700 flex justify-between items-center">
             <input type="date" id="date_picker" value="{{ $date }}" onchange="window.location.href='?date='+this.value"
-                   class="border-gray-200 rounded-xl text-xs font-bold text-indigo-900">
+                   class="border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-xl text-xs font-bold text-indigo-900">
             
             <input type="text" x-model="search" placeholder="Rechercher dans le tableau..." 
-                   class="border-gray-200 rounded-xl text-xs py-2 w-64">
+                   class="border-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-xl text-xs py-2 w-64">
         </div>
 
-        <div class="overflow-y-auto max-h-[600px]">
-            <table class="min-w-full divide-y divide-gray-100">
-                <thead class="bg-indigo-50 sticky top-0">
-                    <tr class="text-[9px] font-black text-indigo-900 uppercase">
+        <div class="overflow-y-auto max-h-[600px] custom-scrollbar">
+            <table class="min-w-full divide-y divide-gray-100 dark:divide-gray-700">
+                <thead class="bg-indigo-50 dark:bg-indigo-900/40 sticky top-0">
+                    <tr class="text-[9px] font-black text-indigo-900 dark:text-indigo-300 uppercase">
                         <th class="px-4 py-3 text-left">Agent</th>
                         <th class="px-4 py-3 text-center">Arrivée</th>
                         <th class="px-4 py-3 text-center">Départ</th>
                         <th class="px-4 py-3 text-center">Observation</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-50">
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
                     @foreach($agents as $agent)
                     @php $p = $agent->pointages->first(); @endphp
-                    <tr class="cursor-pointer hover:bg-indigo-50 transition" 
+                    <tr class="cursor-pointer hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition" 
                         x-show="search === '' || '{{ strtolower($agent->nom_complet) }}'.includes(search.toLowerCase())"
                         @click="
                             selectedAgentId = '{{ $agent->id }}'; 
@@ -37,11 +37,11 @@
                             hasArrivee = {{ $p && $p->heure_arrivee ? 'true' : 'false' }};
                             hasDepart = {{ $p && $p->heure_depart ? 'true' : 'false' }};
                         ">
-                        <td class="px-4 py-4 text-xs font-bold text-gray-900">{{ $agent->nom_complet }}</td>
-                        <td class="px-4 py-3 text-center font-mono text-xs text-indigo-600">
+                        <td class="px-4 py-4 text-xs font-bold text-gray-900 dark:text-white">{{ $agent->nom_complet }}</td>
+                        <td class="px-4 py-3 text-center font-mono text-xs text-indigo-600 dark:text-indigo-400">
                             {{ $p && $p->heure_arrivee ? \Carbon\Carbon::parse($p->heure_arrivee)->format('H:i') : '--:--' }}
                         </td>
-                        <td class="px-4 py-3 text-center font-mono text-xs text-orange-600">
+                        <td class="px-4 py-3 text-center font-mono text-xs text-orange-600 dark:text-orange-400">
                             {{ $p && $p->heure_depart ? \Carbon\Carbon::parse($p->heure_depart)->format('H:i') : '--:--' }}
                         </td>
                         <td class="px-4 py-3 text-center">
@@ -61,8 +61,8 @@
     </div>
 
     <!-- DROITE : FORMULAIRE DE SAISIE (1/3) -->
-    <div class="bg-white shadow-xl rounded-3xl p-6 border border-gray-100 h-fit sticky top-8">
-        <h3 class="text-[10px] font-black uppercase text-gray-400 mb-6 tracking-widest">Saisie du pointage</h3>
+    <div class="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-6 border border-gray-100 dark:border-gray-700 h-fit sticky top-8">
+        <h3 class="text-[10px] font-black uppercase text-gray-400 dark:text-gray-500 mb-6 tracking-widest">Saisie du pointage</h3>
         
         <form action="{{ route('pointages.store') }}" method="POST" class="space-y-6">
             @csrf
@@ -70,26 +70,26 @@
             <input type="hidden" name="date_pointage" value="{{ $date }}">
 
             <div>
-                <label class="block text-[9px] font-black text-gray-400 uppercase mb-1">Agent Sélectionné</label>
+                <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase mb-1">Agent Sélectionné</label>
                 <input type="text" :value="selectedAgentName" readonly 
-                       class="w-full bg-gray-50 border-none rounded-xl font-bold text-indigo-900 text-sm">
+                       class="w-full bg-gray-50 dark:bg-gray-900 border-none rounded-xl font-bold text-indigo-900 dark:text-white text-sm">
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[9px] font-black text-gray-400 uppercase mb-1">Heure Arrivée</label>
+                    <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase mb-1">Heure Arrivée</label>
                     <input type="time" name="heure_arrivee" 
                            :readonly="hasArrivee"
-                           :class="hasArrivee ? 'bg-gray-100 text-gray-400' : 'bg-white'"
-                           class="w-full border-gray-200 rounded-xl text-sm font-bold">
+                           :class="hasArrivee ? 'bg-gray-100 dark:bg-gray-700 text-gray-400' : 'bg-white dark:bg-gray-800'"
+                           class="w-full border-gray-200 dark:border-gray-600 rounded-xl text-sm font-bold">
                 </div>
                 <div>
-                    <label class="block text-[9px] font-black text-gray-400 uppercase mb-1">Heure Départ</label>
+                    <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase mb-1">Heure Départ</label>
                     <input type="time" name="heure_depart" 
                            :readonly="hasDepart || (!hasArrivee && selectedAgentId !== '')"
                            :disabled="!hasArrivee && !document.getElementsByName('heure_arrivee')[0]?.value"
-                           :class="hasDepart ? 'bg-gray-100 text-gray-400' : 'bg-white'"
-                           class="w-full border-gray-200 rounded-xl text-sm font-bold">
+                           :class="hasDepart ? 'bg-gray-100 dark:bg-gray-700 text-gray-400' : 'bg-white dark:bg-gray-800'"
+                           class="w-full border-gray-200 dark:border-gray-600 rounded-xl text-sm font-bold">
                 </div>
             </div>
 
@@ -99,8 +99,8 @@
             </button>
         </form>
 
-        <div class="mt-8 pt-6 border-t border-gray-100">
-            <button class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-black uppercase text-[9px] hover:bg-red-600 hover:text-white transition">
+        <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+            <button class="w-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 py-3 rounded-xl font-black uppercase text-[9px] hover:bg-red-600 hover:text-white transition">
                 Clôturer la journée
             </button>
         </div>

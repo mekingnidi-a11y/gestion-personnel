@@ -1,8 +1,19 @@
+/* Utilisation correcte des directives Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Directive pour le mode sombre manuel */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+    body {
+        @apply transition-colors duration-200;
+    }
+}
+
 @layer utilities {
-    /* Force les tableaux à défiler horizontalement sur mobile */
+    /* Vos règles existantes */
     table {
         display: block;
         width: 100%;
@@ -10,12 +21,10 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Empêche les textes longs (UUID) de casser le design */
     .truncate-mobile {
         @apply truncate max-w-[150px] lg:max-w-none;
     }
     
-    /* Grilles adaptables : 1 colonne sur mobile, 2 ou 3 sur PC */
     .grid-responsive {
         @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
     }
