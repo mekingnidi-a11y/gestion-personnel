@@ -17,7 +17,7 @@
                         @endif
                     </h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">
-                        Bienvenue , <span class="text-indigo-600 dark:text-indigo-400 font-bold">{{ Auth::user()->username }}</span>. 
+                        Bienvenue, <span class="text-indigo-600 dark:text-indigo-400 font-bold">{{ Auth::user()->username }}</span>. 
                         Voici l'état actuel de votre périmètre.
                     </p>
                 </div>
